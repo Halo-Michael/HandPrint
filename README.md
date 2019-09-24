@@ -1,24 +1,29 @@
-# HomeGesture
-Enable iPhone X home gesture on other iOS 11 devices.
+# Hand Print
+Enable native X gesture for your iPhone!
 
 ## Features
 * iPhone X home and multitasking gestures
-* Home Bar, carrier text, breadcrumb, unlock and notification hints hidden
+* Doesn't hidden Home Bar, carrier text, breadcrumb, unlock and notification.
 * Uses original button gestures for screenshot and Siri
 * Force-close apps without long-pressing in Multitasking
+* Only support iOS12 so fixed Control Center crash and fixed the Flash button and Camera button on Lock Screen.
 
 ## Building
 [Theos](https://github.com/theos/theos) required.
 
 Build tweak using `make` in the source directory.
 
-Tweak binary is located in `./.theos/obj/debug/HomeGesture.dylib`.
+Tweak binary is located in `./.theos/obj/debug/HandPrint.dylib`.
+
+Or build tweak using `make package` in the source directory.
+
+Tweak package is located in `./packages/xxx.deb`.
 
 ## Installing
-Copy the tweak binary as well as `HomeGesture.plist` in the source directory to the tweak directory on the iOS device 
-(`/bootstrap/Library/SBinject` for Electra on iOS 11.1-11.1.2 or `/Library/TweakInject` for Electra on iOS 11.2-11.3.1).
+dpkg -i xxx.deb
 
-Prebuilt releases are available [here](https://github.com/VitaTaf/HomeGesture/releases).
+Prebuilt releases are available [here](https://github.com/Halo-Michael/HandPrint/releases).
 
 ## Forks
-HomeGesture forks such as [HomeGesture Lite by MidnightChips](https://repo.packix.com/package/com.vitataf.homegesturelite/) may also be installed from Cydia. Developers are free to modify and use the HomeGesture source in their work in accordance with the GNU General Public License.
+HandPrint forked from [HomeGesture](https://github.com/VitaTaf/HomeGesture).
+Developers are free to modify and use the HomeGesture source in their work in accordance with the GNU General Public License.
