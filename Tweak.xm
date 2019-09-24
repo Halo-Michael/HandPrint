@@ -1,4 +1,3 @@
-#define kCFCoreFoundationVersionNumber_iOS_12_0 1535.12
 long _dismissalSlidingMode = 0;
 bool originalButton;
 long _homeButtonType = 1;
