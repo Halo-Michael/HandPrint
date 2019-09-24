@@ -1,7 +1,10 @@
+target ?= iphone:clang::12.0
+ARCHS ?= arm64
+DEBUG ?= no
 include $(THEOS)/makefiles/common.mk
 
-TWEAK_NAME = HomeGesture
-HomeGesture_FILES = Tweak.xm
+TWEAK_NAME = HandPrint
+HandPrint_FILES = Tweak.xm
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 

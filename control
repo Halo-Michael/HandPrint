@@ -1,9 +1,10 @@
-Package: com.VitaTaf.HomeGesture
-Name: HomeGesture
-Depends: mobilesubstrate
-Version: 1.5
+Package: com.michael.handprint
+Name: HandPrint
+Depends: firmware (>= 12.0), firmware (<= 12.4), mobilesubstrate
+Conflicts: netskao.2436fix
+Version: 0.4.0
 Architecture: iphoneos-arm
-Description: Enable iPhone X home gesture on other devices.
-Maintainer: VitaTaf
-Author: VitaTaf
+Description: Enable native X gesture for your iPhone!
+Maintainer: Halo_Michael <yc992147156@me.com>
+Author: Halo_Michael <yc992147156@me.com>
 Section: Tweaks

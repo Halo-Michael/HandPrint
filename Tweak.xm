@@ -1,3 +1,4 @@
+#define kCFCoreFoundationVersionNumber_iOS_12_0 1535.12
 long _dismissalSlidingMode = 0;
 bool originalButton;
 long _homeButtonType = 1;
@@ -16,13 +17,6 @@ int applicationDidFinishLaunching;
 }
 %end
 
-// Hide home bar
-%hook MTLumaDodgePillView
-- (id)initWithFrame:(struct CGRect)arg1 {
-	return NULL;
-}
-%end
-
 // Workaround for TouchID respring bug
 %hook SBCoverSheetSlidingViewController
 - (void)_finishTransitionToPresented:(_Bool)arg1 animated:(_Bool)arg2 withCompletion:(id)arg3 {
@@ -35,63 +29,6 @@ int applicationDidFinishLaunching;
 - (long long)dismissalSlidingMode {
 	_dismissalSlidingMode = %orig;
 	return %orig;
-}
-%end
-
-// Remove carrier text
-%hook UIStatusBarServiceItemView
-- (id)_serviceContentsImage {
-    return nil;
-}
-- (CGFloat)extraRightPadding {
-    return 0.0f;
-}
-- (CGFloat)standardPadding {
-    return 2.0f;
-}
-%end
-
-// Workaround for status bar transition bug
-%hook CCUIOverlayStatusBarPresentationProvider
-- (void)_addHeaderContentTransformAnimationToBatch:(id)arg1 transitionState:(id)arg2 {
-	return;
-}
-- (struct CGRect)headerViewFrame {
-	struct CGRect orig = %orig;
-	orig.size.height = 45;
-	return (CGRect){orig.origin, orig.size};
-}
-- (struct CGRect)_presentedViewFrame {
-	struct CGRect orig = %orig;
-	orig.origin.y = 45;
-	return (CGRect){orig.origin, orig.size};
-}
-%end
-// Prevent status bar from flashing when invoking control center
-%hook CCUIModularControlCenterOverlayViewController
-- (void)setOverlayStatusBarHidden:(bool)arg1 {
-	return;
-}
-%end
-// Prevent status bar from displaying in fullscreen when invoking control center
-%hook CCUIStatusBarStyleSnapshot
-- (bool)isHidden {
-	return YES;
-}
-%end
-
-// Hide home bar in cover sheet
-%hook SBDashboardHomeAffordanceView
-- (void)_createStaticHomeAffordance {
-	return;
-}
-%end
-
-// Restore footer indicators
-%hook SBDashBoardViewController
-- (void)viewDidLoad {
-	originalButton = YES;
-	%orig;
 }
 %end
 
@@ -144,39 +81,6 @@ int applicationDidFinishLaunching;
 }
 %end
 
-// Hide notification hints
-%hook NCNotificationListSectionRevealHintView
-- (void)_updateHintTitle {
-	return;
-}
-%end
-
-// Hide unlock hints
-%hook SBDashBoardTeachableMomentsContainerViewController
-- (void)_updateTextLabel {
-	return;
-}
-%end
-
-// Disable breadcrumb
-%hook SBWorkspaceDefaults
-- (bool)isBreadcrumbDisabled {
-	return YES;
-}
-%end
-
-// Workaround for crash when launching app and invoking control center simultaneously
-%hook SBSceneHandle
-- (id)scene {
-	@try {
-		return %orig;
-	}
-	@catch (NSException *e) {
-		return nil;
-	}
-}
-%end
-
 // Force close app without long-pressing card
 %hook SBAppSwitcherSettings
 - (long long)effectiveKillAffordanceStyle {
@@ -188,5 +92,42 @@ int applicationDidFinishLaunching;
 - (double)_killGestureHysteresis {
 	double orig = %orig;
 	return orig == 30 ? 10 : orig;
+}
+%end
+
+@interface UIView (SpringBoardAdditions)
+- (void)sb_removeAllSubviews;
+@end
+
+@interface SBDashBoardQuickActionsView : UIView
+- (void)_layoutQuickActionButtons;
+- (void)handleButtonPress:(id)arg1 ;
+@end
+
+%hook SBDashBoardQuickActionsView
+- (void)_layoutQuickActionButtons {
+    %orig;
+    for (UIView *subview in self.subviews) {
+    if (subview.frame.origin.x < 50) {
+        CGRect flashlight = subview.frame;
+        CGFloat flashlightOffset = subview.alpha > 0 ? (flashlight.origin.y - 90) : flashlight.origin.y;
+        subview.frame = CGRectMake(46, flashlightOffset, 50, 50);
+    } else {
+        CGFloat _screenWidth = [UIScreen mainScreen].bounds.size.width;
+        CGRect camera = subview.frame;
+        CGFloat cameraOffset = subview.alpha > 0 ? (camera.origin.y - 90) : camera.origin.y;
+        subview.frame = CGRectMake(_screenWidth - 96, cameraOffset, 50, 50);
+    }
+    [subview sb_removeAllSubviews];
+    #pragma clang diagnostic ignored "-Wunused-value"
+    [subview init];
+    }
+}
+%end
+
+// Fix control center from crashing on iOS 12.
+%hook _UIStatusBarVisualProvider_iOS
++ (Class)class {
+    return NSClassFromString(@"_UIStatusBarVisualProvider_Split58");
 }
 %end
