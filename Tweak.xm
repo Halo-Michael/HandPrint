@@ -1,5 +1,3 @@
-bool originalButton;
-long _homeButtonType = 1;
 bool disableGestures = NO;
 
 @interface CSQuickActionsView : UIView
@@ -11,16 +9,11 @@ bool disableGestures = NO;
 // Enable home gestures
 %hook BSPlatform
 - (NSInteger)homeButtonType {
-	_homeButtonType = %orig;
-	if (originalButton) {
-		originalButton = NO;
-		return %orig;
-	} else {
-		return 2;
-	}
+	return 2;
 }
 %end
 
+// Fix quick actions view in lockscreen
 %hook CSQuickActionsView
 - (void)_layoutQuickActionButtons {
     CGRect screenBounds = [UIScreen mainScreen].bounds;
@@ -31,6 +24,7 @@ bool disableGestures = NO;
 }
 %end
 
+// Hidden StatusBar in ControlCenter
 %hook CCUIStatusBarStyleSnapshot
 -(BOOL)isHidden {
     return YES;
@@ -43,6 +37,7 @@ bool disableGestures = NO;
 }
 %end
 
+// Restore Keyboard
 %hook UIKeyboardImpl
 +(UIEdgeInsets)deviceSpecificPaddingForInterfaceOrientation:(NSInteger)orientation inputMode:(id)mode {
     UIEdgeInsets orig = %orig;
@@ -53,6 +48,7 @@ bool disableGestures = NO;
 }
 %end
 
+// Disable gestures when keyboard is actived
 %group disableGesturesWhenKeyboard
 %hook SBFluidSwitcherGestureManager
 -(void)grabberTongueBeganPulling:(id)arg1 withDistance:(double)arg2 andVelocity:(double)arg3  {
