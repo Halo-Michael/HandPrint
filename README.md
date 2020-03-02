@@ -12,7 +12,7 @@ Enable native X gesture for your iPhone!
 
 Build tweak using `make` in the source directory.
 
-Tweak binary is located in `./.theos/obj/debug/HandPrint.dylib`.
+Tweak binary is located in `./.theos/obj/`.
 
 Or build tweak using `make package` in the source directory.
 
