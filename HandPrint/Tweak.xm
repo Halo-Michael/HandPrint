@@ -33,7 +33,7 @@ bool disableGestures = NO;
 
 %hook CCUIOverlayStatusBarPresentationProvider
 - (void)_addHeaderContentTransformAnimationToBatch:(id)arg1 transitionState:(id)arg2 {
-    %orig(nil, arg2);
+    return;
 }
 %end
 
