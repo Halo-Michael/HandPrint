@@ -39,12 +39,17 @@ bool disableGestures = NO;
 
 // Disable gestures when keyboard is actived
 %group disableGesturesWhenKeyboard
-%hook SBFluidSwitcherGestureManager
--(void)grabberTongueBeganPulling:(id)arg1 withDistance:(double)arg2 andVelocity:(double)arg3  {
-    if (!disableGestures)
-        %orig;
-}
-%end
+    %hook SBFluidSwitcherGestureManager
+    -(void)grabberTongueBeganPulling:(id)arg1 withDistance:(double)arg2 andVelocity:(double)arg3  {
+        if (!disableGestures)
+            %orig;
+    }
+    //iOS 13.4
+    -(void)grabberTongueBeganPulling:(id)arg1 withDistance:(double)arg2 andVelocity:(double)arg3 andGesture:(id)arg4 {
+        if (!disableGestures)
+            %orig;
+    }
+    %end
 %end
 
 %ctor {
