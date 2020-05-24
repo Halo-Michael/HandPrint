@@ -1,7 +1,7 @@
 Package: com.michael.handprint
 Name: HandPrint
 Depends: firmware (>= 13.0), mobilesubstrate
-Version: 0.5.3
+Version: 0.5.4
 Architecture: iphoneos-arm
 Description: Enable native X gesture for your iPhone!
 Maintainer: Halo_Michael <yc992147156@me.com>
