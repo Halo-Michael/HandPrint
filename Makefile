@@ -1,11 +1,12 @@
-target ?= iphone:clang::13.1
+target ?= iphone:clang::13.0
 ARCHS ?= arm64 arm64e
 DEBUG ?= no
 include $(THEOS)/makefiles/common.mk
 
-include $(THEOS_MAKE_PATH)/tweak.mk
+TWEAK_NAME = HandPrint
+HandPrint_FILES = Tweak.xm
 
-SUBPROJECTS += HandPrint HandPrintKB
+include $(THEOS_MAKE_PATH)/tweak.mk
 
 include $(THEOS_MAKE_PATH)/aggregate.mk
 
